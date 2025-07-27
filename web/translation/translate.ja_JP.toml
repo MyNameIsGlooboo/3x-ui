@@ -681,6 +681,7 @@
 "getInbounds" = "インバウンド情報を取得"
 "depleteSoon" = "間もなく消耗"
 "clientUsage" = "使用状況を取得"
+"clientConfig" = "設定を取得"
 "onlines" = "オンラインクライアント"
 "commands" = "コマンド"
 "refresh" = "🔄 更新"
@@ -735,3 +736,4 @@
 "askToAddUserId" = "設定が見つかりませんでした！\r\n管理者に問い合わせて、設定にTelegramユーザーのChatIDを使用してください。\r\n\r\nあなたのユーザーChatID：<code>{{ .TgUserID }}</code>"
 "chooseClient" = "インバウンド {{ .Inbound }} のクライアントを選択"
 "chooseInbound" = "インバウンドを選択"
+"getConfigError" = "設定ファイルの取得中にエラーが発生しました"

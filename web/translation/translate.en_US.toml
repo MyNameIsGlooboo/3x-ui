@@ -678,6 +678,7 @@
 "getInbounds" = "Get Inbounds"
 "depleteSoon" = "Deplete Soon"
 "clientUsage" = "Get Usage"
+"clientConfig" = "Get Config"
 "onlines" = "Online Clients"
 "commands" = "Commands"
 "refresh" = "🔄 Refresh"
@@ -731,3 +732,4 @@
 "askToAddUserId" = "Your configuration is not found!\r\nPlease ask your admin to use your Telegram ChatID in your configuration(s).\r\n\r\nYour ChatID: <code>{{ .TgUserID }}</code>"
 "chooseClient" = "Choose a Client for Inbound {{ .Inbound }}"
 "chooseInbound" = "Choose an Inbound"
+"getConfigError" = "An error occurred while retrieving the config file."

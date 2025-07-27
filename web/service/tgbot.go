@@ -1327,6 +1327,10 @@ func (t *Tgbot) answerCallback(callbackQuery *telego.CallbackQuery, isAdmin bool
 		tgUserID := callbackQuery.From.ID
 		t.sendCallbackAnswerTgBot(callbackQuery.ID, t.I18nBot("tgbot.buttons.clientUsage"))
 		t.getClientUsage(chatId, tgUserID)
+	case "client_config":
+		tgUserID := callbackQuery.From.ID
+		t.sendCallbackAnswerTgBot(callbackQuery.ID, t.I18nBot("tgbot.buttons.clientConfig"))
+		t.getClientConfig(chatId, tgUserID)
 	case "client_commands":
 		t.sendCallbackAnswerTgBot(callbackQuery.ID, t.I18nBot("tgbot.buttons.commands"))
 		t.SendMsgToTgbot(chatId, t.I18nBot("tgbot.commands.helpClientCommands"))
@@ -1806,6 +1810,9 @@ func (t *Tgbot) SendAnswer(chatId int64, msg string, isAdmin bool) {
 			tu.InlineKeyboardButton(t.I18nBot("tgbot.buttons.clientUsage")).WithCallbackData(t.encodeQuery("client_traffic")),
 			tu.InlineKeyboardButton(t.I18nBot("tgbot.buttons.commands")).WithCallbackData(t.encodeQuery("client_commands")),
 		),
+		tu.InlineKeyboardRow(
+			tu.InlineKeyboardButton(t.I18nBot("tgbot.buttons.clientConfig")).WithCallbackData(t.encodeQuery("client_config")),
+		),
 	)
 
 	var ReplyMarkup telego.ReplyMarkup
@@ -2277,6 +2284,45 @@ func (t *Tgbot) getClientUsage(chatId int64, tgUserID int64, email ...string) {
 	}
 
 	output += t.I18nBot("tgbot.messages.refreshedOn", "Time=="+time.Now().Format("2006-01-02 15:04:05"))
+	t.SendMsgToTgbot(chatId, output)
+	output = t.I18nBot("tgbot.commands.pleaseChoose")
+	t.SendAnswer(chatId, output, false)
+}
+
+func (t *Tgbot) getClientConfig(chatId int64, tgUserID int64) {
+	traffics, err := t.inboundService.GetClientTrafficTgBot(tgUserID)
+	if err != nil {
+		logger.Warning(err)
+		t.SendMsgToTgbot(chatId, t.I18nBot("tgbot.wentWrong"))
+		return
+	}
+
+	if len(traffics) == 0 {
+		t.SendMsgToTgbot(chatId, t.I18nBot("tgbot.answers.askToAddUserId", "TgUserID=="+strconv.FormatInt(tgUserID, 10)))
+		return
+	}
+
+	subURI, err := t.settingService.GetSubURI()
+	if err != nil || subURI == "" {
+		t.SendMsgToTgbot(chatId, t.I18nBot("tgbot.answers.getConfigError"))
+		return
+	}
+
+	var links []string
+	for _, traffic := range traffics {
+		_, client, err := t.inboundService.GetClientByEmail(traffic.Email)
+		if err != nil || client == nil {
+			continue
+		}
+		links = append(links, subURI+client.SubID)
+	}
+
+	if len(links) == 0 {
+		t.SendMsgToTgbot(chatId, t.I18nBot("tgbot.noResult"))
+		return
+	}
+
+	output := strings.Join(links, "\r\n")
 	t.SendMsgToTgbot(chatId, output)
 	output = t.I18nBot("tgbot.commands.pleaseChoose")
 	t.SendAnswer(chatId, output, false)

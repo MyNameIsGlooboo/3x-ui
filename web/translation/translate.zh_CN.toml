@@ -681,6 +681,7 @@
 "getInbounds" = "获取入站信息"
 "depleteSoon" = "即将耗尽"
 "clientUsage" = "获取使用情况"
+"clientConfig" = "获取配置"
 "onlines" = "在线客户端"
 "commands" = "命令"
 "refresh" = "🔄 刷新"
@@ -735,3 +736,4 @@
 "askToAddUserId" = "未找到您的配置！\r\n请向管理员询问，在您的配置中使用您的 Telegram 用户 ChatID。\r\n\r\n您的用户 ChatID：<code>{{ .TgUserID }}</code>"
 "chooseClient" = "为入站 {{ .Inbound }} 选择一个客户"
 "chooseInbound" = "选择一个入站"
+"getConfigError" = "检索配置文件时出错"
